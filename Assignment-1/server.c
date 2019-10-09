@@ -5,6 +5,7 @@
 #include <stdlib.h> 
 #include <netinet/in.h> 
 #include <string.h> 
+#include <sys/wait.h>
 #define PORT 8080 
 int main(int argc, char const *argv[]) 
 { 
@@ -13,8 +14,12 @@ int main(int argc, char const *argv[])
     int opt = 1; 
     int addrlen = sizeof(address); 
     char buffer[1024] = {0}; 
+    
     char *hello = "Hello from server"; 
-       
+    pid_t parent_pid;   
+    pid_t current_pid; 
+    current_pid=getpid();  
+ 
     // Creating socket file descriptor 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
     { 
@@ -32,6 +37,8 @@ int main(int argc, char const *argv[])
     address.sin_family = AF_INET; 
     address.sin_addr.s_addr = INADDR_ANY; 
     address.sin_port = htons( PORT ); 
+    
+    
        
     // Forcefully attaching socket to the port 8080 
     if (bind(server_fd, (struct sockaddr *)&address,  
@@ -51,9 +58,37 @@ int main(int argc, char const *argv[])
         perror("accept"); 
         exit(EXIT_FAILURE); 
     } 
-    valread = read( new_socket , buffer, 1024); 
-    printf("%s\n",buffer ); 
-    send(new_socket , hello , strlen(hello) , 0 ); 
-    printf("Hello message sent\n"); 
+	printf("******* start **********\n");
+	/*Solution for Assignment-1
+	removing the privilege for the read and send functions of the server
+	by creating a child process
+	run the server as root process..using sudo.
+	*/
+    current_pid=fork(); // creates a child process
+    if(current_pid == 0)
+    {
+	printf("Child created...reading from client\n");
+	printf("child id: %d\n",current_pid);
+	setuid(65534); /*user - nobody(uid - 65534), current_user(uid -1000)
+	use id command to get the userIds	*/
+    	valread = read( new_socket , buffer, 1024); 
+    	printf("%s\n",buffer ); 
+    	send(new_socket , hello , strlen(hello) , 0 ); 
+    	printf("Hello message sent\n"); 
+	printf("IN CHILD ->current_user_id: %d\n",getuid());
+    }
+    else if(current_pid > 0)
+    {
+	wait(NULL);
+	printf("control returns to parent...\n");
+	
+    }
+    else
+    {
+	perror("fork failed\n");
+	_exit(2);
+    }
+    //printf(" IN PARENT -> current_user_id: %d\n",getuid());
+    printf("DEBUG /ppid returns:%d\n",parent_pid);
     return 0; 
 } 
