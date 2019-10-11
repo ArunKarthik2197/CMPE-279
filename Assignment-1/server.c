@@ -6,6 +6,8 @@
 #include <netinet/in.h> 
 #include <string.h> 
 #include <sys/wait.h>
+#define RED(string) "\x1b[31m" string "\x1b[0m"
+#define BLUE(string) "\x1b[34m" string "\x1b[0m"
 #define PORT 8080 
 int main(int argc, char const *argv[]) 
 { 
@@ -23,7 +25,7 @@ int main(int argc, char const *argv[])
     // Creating socket file descriptor 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
     { 
-        perror("socket failed"); 
+        perror(RED("socket failed")); 
         exit(EXIT_FAILURE); 
     } 
        
@@ -31,7 +33,7 @@ int main(int argc, char const *argv[])
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, 
                                                   &opt, sizeof(opt))) 
     { 
-        perror("setsockopt"); 
+        perror(RED("setsockopt")); 
         exit(EXIT_FAILURE); 
     } 
     address.sin_family = AF_INET; 
@@ -44,7 +46,7 @@ int main(int argc, char const *argv[])
     if (bind(server_fd, (struct sockaddr *)&address,  
                                  sizeof(address))<0) 
     { 
-        perror("bind failed"); 
+        perror(RED("bind failed")); 
         exit(EXIT_FAILURE); 
     } 
     if (listen(server_fd, 3) < 0) 
@@ -55,10 +57,10 @@ int main(int argc, char const *argv[])
     if ((new_socket = accept(server_fd, (struct sockaddr *)&address,  
                        (socklen_t*)&addrlen))<0) 
     { 
-        perror("accept"); 
+        perror(RED("accept")); 
         exit(EXIT_FAILURE); 
     } 
-	printf("******* start **********\n");
+	printf(BLUE("******* start **********\n"));
 	/*Solution for Assignment-1
 	removing the privilege for the read and send functions of the server
 	by creating a child process
@@ -75,7 +77,7 @@ int main(int argc, char const *argv[])
     	printf("%s\n",buffer ); 
     	send(new_socket , hello , strlen(hello) , 0 ); 
     	printf("Hello message sent\n"); 
-	printf("IN CHILD ->current_user_id: %d\n",getuid());
+	printf(RED("IN CHILD ->")BLUE("current_user_id: %d\n"),getuid());
     }
     else if(current_pid > 0)
     {
@@ -85,10 +87,11 @@ int main(int argc, char const *argv[])
     }
     else
     {
-	perror("fork failed\n");
+	perror(RED("fork failed\n"));
 	_exit(2);
     }
     //printf(" IN PARENT -> current_user_id: %d\n",getuid());
-    printf("DEBUG /ppid returns:%d\n",parent_pid);
+    printf(RED("DEBUG /ppid returns:"BLUE("%d\n")),parent_pid);
+    printf(BLUE("*********END***********\n"));
     return 0; 
 } 
