@@ -4,3 +4,5 @@
 > **Karthik Munipalle (013854867)** _and_
 > **Karthika Arumugam (011484460)**
 
+#### Assignment-1
+- Privilege seperation using `fork()` call.
