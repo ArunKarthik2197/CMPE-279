@@ -67,17 +67,8 @@ int main(int argc, char const *argv[])
     current_pid=fork(); // creates a child process
     if(current_pid == 0)
     {
-	char *args[] = {"./server",NULL};
-	execvp(args[0],args);
-	printf("Child created...reading from client\n");
-	printf("child id: %d\n",current_pid);
-	setuid(65534); /*user - nobody(uid - 65534), current_user(uid -1000)
-	use id command to get the userIds	*/
-    	valread = read( new_socket , buffer, 1024); 
-    	printf("%s\n",buffer ); 
-    	send(new_socket , hello , strlen(hello) , 0 ); 
-    	printf("Hello message sent\n"); 
-	printf("IN CHILD ->current_user_id: %d\n",getuid());
+	execl("reader","reader",&new_socket,hello,NULL);
+	
     }
     else if(current_pid > 0)
     {
