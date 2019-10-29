@@ -14,7 +14,8 @@ int main(int argc, char const *argv[])
     int server_fd, new_socket, valread; 
     struct sockaddr_in address; 
     int opt = 1; 
-    int addrlen = sizeof(address); 
+    int addrlen = sizeof(address);
+    int val; 
     char buffer[1024] = {0}; 
     
     char *hello = "Hello from server"; 
@@ -71,8 +72,14 @@ int main(int argc, char const *argv[])
     {
 	printf("Child created...reading from client\n");
 	printf("child id: %d\n",current_pid);
-	setuid(65534); /*user - nobody(uid - 65534), current_user(uid -1000)
-	use id command to get the userIds	*/
+	val = setuid(65534); /*user - nobody(uid - 65534), current_user(uid -1000)
+	use id command to get the userIds
+	*/
+	printf("val: %d\tcurrent_id: %d\n",val,getuid());
+	if(val ==-1){
+	printf(RED("Error dropping privilege\n"));
+	return 0;
+	}
     	valread = read( new_socket , buffer, 1024); 
     	printf("%s\n",buffer ); 
     	send(new_socket , hello , strlen(hello) , 0 ); 

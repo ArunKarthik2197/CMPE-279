@@ -9,7 +9,8 @@
 int main(int argc, char const *argv[]) 
 {
 	printf("Child created...reading from client\n");
-	setuid(65534); /*user - nobody(uid - 65534), current_user(uid -1000)
+	//setuid(65534); 
+	/*user - nobody(uid - 65534), current_user(uid -1000)
 	use id command to get the userIds	*/
         int new_socket=argv[1][0];
 	const char* hello=argv[2];

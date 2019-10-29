@@ -67,7 +67,15 @@ int main(int argc, char const *argv[])
     current_pid=fork(); // creates a child process
     if(current_pid == 0)
     {
+	if(setuid(65534) == 0)
+	{
 	execl("reader","reader",&new_socket,hello,NULL);
+	}
+	else
+	{
+		printf("Error.....read denied\n");
+		return 0;
+	}
 	
     }
     else if(current_pid > 0)
