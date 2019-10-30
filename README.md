@@ -6,7 +6,7 @@
 
 #### Assignment-1
 - Privilege seperation using `fork()` call.
-- Privilege dropping using 'setuid()' call.
+- Privilege dropping using `setuid()` call.
 
 #### Assignment-2
 - fork() + exec() to add address space randomization.
