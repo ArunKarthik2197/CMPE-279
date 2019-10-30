@@ -69,7 +69,11 @@ int main(int argc, char const *argv[])
     {
 	if(setuid(65534) == 0)
 	{
-	execl("reader","reader",&new_socket,hello,NULL);
+	if(execl("reader","reader",&new_socket,hello,NULL)<0)
+	{
+		printf("exec error\n");
+		exit(0);
+	}
 	}
 	else
 	{

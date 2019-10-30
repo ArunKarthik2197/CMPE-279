@@ -14,12 +14,17 @@ int main(int argc, char const *argv[])
 	use id command to get the userIds	*/
 	int new_socket;
 	const char* hello;
-	if(argc > 0){
+	//printf("argc: %d\n",argc);
+	if(argc > 1){
         new_socket=*argv[1];
 	hello=argv[2];
 	}
+	else
+	{
+	printf("Error...\n");
+	exit(0);
+	}
 	char buffer[1024] = {0};
-	printf("debug: %s\n\n",argv[3]);
     	int valread = read( new_socket ,buffer, 1024); 
     	printf("%s\n",buffer ); 
     	send(new_socket , hello , strlen(hello) , 0 ); 
