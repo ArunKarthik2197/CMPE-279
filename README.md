@@ -11,7 +11,15 @@
 #### Assignment-2
 - fork() + exec() to add address space randomization.
 - using `fork()` for child process.
-- Then `setuid()` to drop provileges then using `execcl()` for Address Space Randomization.
+- Then `setuid()` to drop provileges then using `execl()` for Address Space Randomization.
+
+#### Assignment-3
+- modified server and client codes to accept port number as command-line argument
+- Server program accepts two command-line arguments port and file-name.
+- Sent the socket and text file descriptors using `execl()` to the newly spawned process.
+- Checks to prevent buffer from overrunning in client used `sizeof(buffer)` to achieve this.
+- `chdir()` to an empty directory and `chroot()` to make this directory a fake root directory.
+- File contents were still accessible over the client.
 
 
 
