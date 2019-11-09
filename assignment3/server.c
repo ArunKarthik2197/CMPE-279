@@ -7,6 +7,9 @@
 #include <string.h> 
 #include <sys/wait.h>
 #include <fcntl.h>
+#define RED(string) "\x1b[31m" string "\x1b[0m"
+#define BLUE(string) "\x1b[34m" string "\x1b[0m"
+
 //#define PORT 8080 
 int main(int argc, char const *argv[]) 
 { 
@@ -15,25 +18,29 @@ int main(int argc, char const *argv[])
     int opt = 1; 
     int addrlen = sizeof(address); 
     char buffer[1024] = {0}; 
-    unsigned int port = 8080;  
-    //char *hello = "Hello from server"; 
+    unsigned int port = 8080;   
     int file_fd;
     pid_t parent_pid;   
     pid_t current_pid; 
     current_pid=getpid();
     if(argc>2)
     {
-	printf("arg: %s\n",argv[1]);
 	port = strtol(argv[1],NULL,10);
 	if(argv[2]!=NULL)
 	{
 		file_fd = open(argv[2],O_RDONLY,S_IRUSR);
 	}
-    }  
+    }
+    else
+	{
+		printf (RED("ERROR: not enough command line arguments\n"));
+		exit(0);
+	}  
 	printf("port: %d\n",port);
 	printf("..................\n");
 	
- 
+    if(port>0 && port<65536)
+    {
     // Creating socket file descriptor 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
     { 
@@ -72,7 +79,7 @@ int main(int argc, char const *argv[])
         perror("accept"); 
         exit(EXIT_FAILURE); 
     } 
-	printf("******* start **********\n");
+	printf(BLUE("******* start **********\n"));
 	/*Solution for Assignment-1
 	removing the privilege for the read and send functions of the server
 	by creating a child process
@@ -91,7 +98,7 @@ int main(int argc, char const *argv[])
 	}
 	else
 	{
-		printf("Error.....read denied\n");
+		printf(RED("Error...file does not exist\n"));
 		return 0;
 	}
 	
@@ -109,5 +116,10 @@ int main(int argc, char const *argv[])
     }
     //printf(" IN PARENT -> current_user_id: %d\n",getuid());
     printf("DEBUG /ppid returns:%d\n",parent_pid);
+    }
+    else
+    {
+       printf(RED("Invalid Port number\n"));  
+    }
     return 0; 
 } 
