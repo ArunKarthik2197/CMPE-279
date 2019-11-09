@@ -14,8 +14,7 @@ int main(int argc, char const *argv[])
     struct sockaddr_in serv_addr; 
     char *hello = "Hello from client";
     char c; 
-    //char buffer[1024] = {0};
-    FILE *fp;
+    char buffer[1024] = {0};
     int port = 8080;
     if(argc > 1)
     {
@@ -49,21 +48,7 @@ int main(int argc, char const *argv[])
     } 
     send(sock , hello , strlen(hello) , 0 ); 
     printf("Hello message sent\n"); 
-    valread = read( sock , fp, 1024);
-    if(fp == NULL)
-        {
-                printf("File Read Error\n");
-        } 
-        else
-        {
-                do
-                {
-                        c = getc(fp);
-                        if(c!=EOF){
-                        printf("%c",c);
-                        }
-                }while(c!=EOF);
-        } 
-    //printf("%s\n",buffer ); 
+    valread = read( sock ,buffer, 1024); 
+    printf("%s\n",buffer ); 
     return 0; 
 } 

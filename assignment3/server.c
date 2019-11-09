@@ -6,6 +6,7 @@
 #include <netinet/in.h> 
 #include <string.h> 
 #include <sys/wait.h>
+#include <fcntl.h>
 //#define PORT 8080 
 int main(int argc, char const *argv[]) 
 { 
@@ -16,7 +17,7 @@ int main(int argc, char const *argv[])
     char buffer[1024] = {0}; 
     unsigned int port = 8080;  
     //char *hello = "Hello from server"; 
-    FILE *fp;
+    int file_fd;
     pid_t parent_pid;   
     pid_t current_pid; 
     current_pid=getpid();
@@ -26,7 +27,7 @@ int main(int argc, char const *argv[])
 	port = strtol(argv[1],NULL,10);
 	if(argv[2]!=NULL)
 	{
-		fp = fopen(argv[2],"r");
+		file_fd = open(argv[2],O_RDONLY,S_IRUSR);
 	}
     }  
 	printf("port: %d\n",port);
@@ -80,9 +81,9 @@ int main(int argc, char const *argv[])
     current_pid=fork(); // creates a child process
     if(current_pid == 0)
     {
-	if(setuid(65534) == 0)
+	if(file_fd>0)
 	{
-	if(execl("reader","reader",&new_socket,fp,NULL)<0)
+	if(execl("reader","reader",&new_socket,&file_fd,NULL)<0)
 	{
 		printf("exec error\n");
 		exit(0);
