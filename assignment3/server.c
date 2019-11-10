@@ -17,7 +17,8 @@ int main(int argc, char const *argv[])
     struct sockaddr_in address; 
     int opt = 1; 
     int addrlen = sizeof(address); 
-    char buffer[1024] = {0}; 
+    char buffer[1024] = {0};
+    //char file_type[100]= {0}; 
     unsigned int port = 8080;   
     int file_fd;
     pid_t parent_pid;   
@@ -36,6 +37,8 @@ int main(int argc, char const *argv[])
 		printf (RED("ERROR: not enough command line arguments\n"));
 		exit(0);
 	}  
+	//file_type = fileType(file_fd);
+//	printf("file-type: %s\n",fileType(file_fd));
 	printf("port: %d\n",port);
 	printf("..................\n");
 	
@@ -122,4 +125,11 @@ int main(int argc, char const *argv[])
        printf(RED("Invalid Port number\n"));  
     }
     return 0; 
-} 
+}
+/*char* fileType(int fd) {
+   struct stat s;
+   if (fstat(fd, &s) == -1) {
+      return(NULL);
+   }
+   return(s.st_mode);
+} */
