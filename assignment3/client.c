@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
     struct sockaddr_in serv_addr; 
     char *hello = "Hello from client"; 
     char buffer[1024]={0};
+    char try[1024]={0};
     size_t total_bytes_read=0,file_size;
     int port = 8080;
     if(argc > 1)
@@ -25,6 +26,11 @@ int main(int argc, char const *argv[])
     } 
     printf("port: %d\n",port);
     printf("..................\n");
+    if(port<0 || port>65535)
+    {
+	printf("INVALID PORT NUMBER\n");
+   	exit(0);
+    }
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
     { 
         printf("\n Socket creation error \n"); 
@@ -50,16 +56,17 @@ int main(int argc, char const *argv[])
     } 
     send(sock , hello , strlen(hello) , 0 ); 
     printf("Hello message sent\n");
+    // reading file-size
     valread = read(sock,&file_size,sizeof(file_size)); 
     file_size = ntohs(file_size);
-    if(file_size<sizeof(buffer))
+    printf("file-size: %d\ttry-size: %d\n",file_size,sizeof(try));
+  
+   /* if(file_size<sizeof(buffer))
     {
 	read(sock,buffer,sizeof(buffer));
 	printf("%s\n",buffer);
     }
-    
-    //printf("file-size: %d\tbuffer-size: %d\n",file_size,sizeof(buffer));
-    else{
+    else{*/
     while(total_bytes_read<file_size)
     {
 	if(file_size-total_bytes_read >= sizeof(buffer))
@@ -67,14 +74,14 @@ int main(int argc, char const *argv[])
     	total_bytes_read+=recv(sock,buffer,sizeof(buffer),0);
         printf("%s",buffer);
  	}
-	else
+	else if(file_size-total_bytes_read!=0)
 	{
-		valread = read(sock,buffer,file_size-total_bytes_read);
-		printf("%s\n",buffer);
+		total_bytes_read+= read(sock,try,sizeof(try));
+		printf("%s\n",try);
 		break;
 	}
     }
-    }
+    
    // valread = read(sock,buffer,sizeof(buffer));
     printf("valread: %d\n",valread);
     //free(buffer);

@@ -90,7 +90,7 @@ int main(int argc, char const *argv[])
 	}
 	// sending the file_size
 	file_size= htons(file_size);
- 	write(new_socket, &file_size,sizeof(file_size));
+ 	write(new_socket, &file_size,sizeof(int));
 	// sending the contents of actual file	
     	send(new_socket , hello , strlen(hello) , 0 ); 
 	
