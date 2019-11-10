@@ -15,7 +15,8 @@ int main(int argc, char const *argv[])
     int sock = 0, valread; 
     struct sockaddr_in serv_addr; 
     char *hello = "Hello from client"; 
-    char buffer[1024] = {0};
+    char buffer[1024]={0};
+    size_t total_bytes_read=0,file_size;
     int port = 8080;
     if(argc > 1)
     {
@@ -48,16 +49,34 @@ int main(int argc, char const *argv[])
         return -1; 
     } 
     send(sock , hello , strlen(hello) , 0 ); 
-    printf("Hello message sent\n"); 
-    valread = read( sock ,buffer, sizeof(buffer));
-    printf("%s\n",buffer);
-   /* while(valread>0)
+    printf("Hello message sent\n");
+    valread = read(sock,&file_size,sizeof(file_size)); 
+    file_size = ntohs(file_size);
+    if(file_size<sizeof(buffer))
     {
-	DON'T UN-COMMENT THIS
-
 	read(sock,buffer,sizeof(buffer));
 	printf("%s\n",buffer);
-    }*/  
+    }
+    
+    //printf("file-size: %d\tbuffer-size: %d\n",file_size,sizeof(buffer));
+    else{
+    while(total_bytes_read<file_size)
+    {
+	if(file_size-total_bytes_read >= sizeof(buffer))
+        {
+    	total_bytes_read+=recv(sock,buffer,sizeof(buffer),0);
+        printf("%s",buffer);
+ 	}
+	else
+	{
+		valread = read(sock,buffer,file_size-total_bytes_read);
+		printf("%s\n",buffer);
+		break;
+	}
+    }
+    }
+   // valread = read(sock,buffer,sizeof(buffer));
     printf("valread: %d\n",valread);
+    //free(buffer);
     return 0; 
 } 

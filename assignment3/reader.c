@@ -88,8 +88,12 @@ int main(int argc, char const *argv[])
 	{
 		printf("Empty File\n");
 	}
-	
+	// sending the file_size
+	file_size= htons(file_size);
+ 	write(new_socket, &file_size,sizeof(file_size));
+	// sending the contents of actual file	
     	send(new_socket , hello , strlen(hello) , 0 ); 
+	
     	printf("Hello message sent\n"); 
 	printf("IN CHILD ->current_user_id: %d\n",getuid());
 	}
@@ -102,7 +106,7 @@ int main(int argc, char const *argv[])
 	{
 		printf("chroot error\n");
 	}
-	
+	free(hello);	
 	return 0;
 }
 
