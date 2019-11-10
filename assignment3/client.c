@@ -83,7 +83,7 @@ int main(int argc, char const *argv[])
     }
     
    // valread = read(sock,buffer,sizeof(buffer));
-    printf("valread: %d\n",valread);
+    printf("bytes-read: %d\n",total_bytes_read);
     //free(buffer);
     return 0; 
 } 
