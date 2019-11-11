@@ -29,7 +29,17 @@ int main(int argc, char const *argv[])
 	port = strtol(argv[1],NULL,10);
 	if(argv[2]!=NULL)
 	{
+
+		const char *ext= strrchr(argv[2],'.');
+		ext = (ext && ext != argv[2]) ? ext: (argv[2] + strlen(argv[2]));
+               
+		if(strcmp(ext,".txt")==0){
 		file_fd = open(argv[2],O_RDONLY,S_IRUSR);
+		}
+		else{
+		printf (RED("ERROR: Invalid file extension \n"));
+		exit(0);	
+		}
 	}
     }
     else
