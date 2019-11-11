@@ -25,6 +25,7 @@ int main(int argc, char const *argv[], char const *env[])
     //char file_type[100]= {0}; 
     unsigned int port = 8080;   
     int file_fd;
+    struct stat st = {0};
     pid_t parent_pid;   
     pid_t current_pid; 
     current_pid=getpid();
@@ -176,6 +177,13 @@ int main(int argc, char const *argv[], char const *env[])
                 printf("getcwd error before chroot\n");
         }
 	
+        if(stat(cwd, &st) == -1){
+	if(mkdir(cwd,0700) == -1)
+	{
+	   printf("could not create directory %s\n", cwd);
+	   exit(0);
+	}
+        }
 
 	//changing directory to the fake root
         if(chdir(cwd)==0){
