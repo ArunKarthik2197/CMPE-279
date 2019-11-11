@@ -31,19 +31,23 @@ int main(int argc, char const *argv[])
 	if(argv[2]!=NULL)
 	{
 		ext = strrchr(argv[2], '.');
+		if(ext!=NULL)
 		ext[strlen(ext)] = '\0';
+	
 		if (!ext) {
-		    printf("ext:%s\n",ext);
+		    //printf("ext:%s\n",ext);
 		    printf(RED("INVALID FILE\n"));
 		    exit(0);
 		}
-	        else if(strcmp(ext,"class") || strcmp(ext,"out") || strcmp(ext,"bin")||strcmp(ext,"o")) 
+		else if(strcmp(ext,"txt")||strcmp(ext,"c")||strcmp(ext,"java") )
 		{
-    		printf(RED("Invalid File Extension: %s\n"), ext + 1);
-		exit(0);
-		}
-
 		file_fd = open(argv[2],O_RDONLY,S_IRUSR);
+		}
+		else
+		{
+			printf(RED("INVALID FILE\n"));
+			exit(0);
+		}
 		if(file_fd<0)
 		{
 			printf(RED("Invalid File\n"));
