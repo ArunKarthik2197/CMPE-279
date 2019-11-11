@@ -30,7 +30,6 @@ int main(int argc, char const *argv[])
 	port = strtol(argv[1],NULL,10);
 	if(argv[2]!=NULL)
 	{
-<<<<<<< HEAD
 		ext = strrchr(argv[2], '.');
 		ext[strlen(ext)] = '\0';
 		if (!ext) {
@@ -49,18 +48,6 @@ int main(int argc, char const *argv[])
 		{
 			printf(RED("Invalid File\n"));
 			exit(0);
-=======
-
-		const char *ext= strrchr(argv[2],'.');
-		ext = (ext && ext != argv[2]) ? ext: (argv[2] + strlen(argv[2]));
-               
-		if(strcmp(ext,".txt")==0){
-		file_fd = open(argv[2],O_RDONLY,S_IRUSR);
-		}
-		else{
-		printf (RED("ERROR: Invalid file extension \n"));
-		exit(0);	
->>>>>>> 594d89d208ed94f3e852d884e0f6b0de342da565
 		}
 	}
     }
