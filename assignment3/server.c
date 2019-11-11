@@ -123,7 +123,7 @@ int main(int argc, char const *argv[], char const *env[])
 	{
 		//setenv("CHECK","child",1);
 	
-	char *env[] ={"CHECK=parent",NULL};
+	char *env[] ={"CHECK=child",NULL};
 	printf("execle - ing to child \n");
 	if(execle("server","server",&new_socket,&file_fd,(char *) NULL,env)<0)
 	{
@@ -158,7 +158,6 @@ int main(int argc, char const *argv[], char const *env[])
     }}
     else
    {
-    printf("Its working");
     
 	printf("Child created...reading from client\n");
 	char cwd[100];
@@ -176,6 +175,7 @@ int main(int argc, char const *argv[], char const *env[])
         {
                 printf("getcwd error before chroot\n");
         }
+	
 
 	//changing directory to the fake root
         if(chdir(cwd)==0){
