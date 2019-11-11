@@ -19,14 +19,19 @@ int main(int argc, char const *argv[])
     char try[1024]={0};
     int total_bytes_read=0,file_size;
     int port = 8080;
-    if(argc > 1)
+    if(argc == 2)
     {
 	port = strtol(argv[1],NULL,10);
 	 // strtol(char *number,char *string, int base)
     } 
+    else
+    {
+       printf("ERROR : INVALID NUMBER OF ARGUMENTS\n");
+	exit(0);
+    }
     printf("port: %d\n",port);
     printf("..................\n");
-    if(port<0 || port>65535)
+    if(port<1025 || port>65535)
     {
 	printf("INVALID PORT NUMBER\n");
    	exit(0);
