@@ -32,7 +32,10 @@ int main(int argc, char const *argv[])
         }
 
 	//changing directory to the fake root
-        if(chdir(cwd)== 0){
+        if(chdir(cwd)== 0)
+	{
+	if(getcwd(cwd,sizeof(cwd))!=NULL)
+	printf(RED("before chroot: %s\n"),cwd);
         chr = chroot(cwd); // making the present empty directory a fake root
         }
         else
@@ -41,7 +44,7 @@ int main(int argc, char const *argv[])
         }
 
 	// check for command line args
-	if(argc > 1){
+	if(argc >1){
         new_socket=*argv[1];
 	file  = *argv[2];
 	}
@@ -83,7 +86,7 @@ int main(int argc, char const *argv[])
 		{
 			hello[bytes_read] = '\0';
 		}
-		printf("File Contents:\n%s\n",hello);
+		//printf("File Contents:\n%s\n",hello);
 	}
 	else // for file
 	{

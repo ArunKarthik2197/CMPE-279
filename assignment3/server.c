@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
 		    printf(RED("INVALID FILE\n"));
 		    exit(0);
 		}
-		else if(strcmp(ext,"txt")||strcmp(ext,"c")||strcmp(ext,"java") )
+		else if(strcmp(ext,".txt") == 0 || strcmp(ext,".c")==0 || strcmp(ext,".java") == 0)
 		{
 		file_fd = open(argv[2],O_RDONLY,S_IRUSR);
 		}
