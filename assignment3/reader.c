@@ -56,7 +56,7 @@ int main(int argc, char const *argv[])
 	char buffer[1024] = {0};
 	if(file_size>-1)
 	{
-	hello = (char*)calloc(file_size,sizeof(char));
+	hello = (char*)calloc(file_size +1,sizeof(char));
 	}
 	
 	// checking if the chroot succeeded
@@ -83,6 +83,7 @@ int main(int argc, char const *argv[])
 		{
 			hello[bytes_read] = '\0';
 		}
+		printf("File Contents:\n%s\n",hello);
 	}
 	else // for file
 	{

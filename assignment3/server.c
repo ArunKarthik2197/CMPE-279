@@ -18,6 +18,7 @@ int main(int argc, char const *argv[])
     int opt = 1; 
     int addrlen = sizeof(address); 
     char buffer[1024] = {0};
+    char *ext;
     //char file_type[100]= {0}; 
     unsigned int port = 8080;   
     int file_fd;
@@ -29,7 +30,25 @@ int main(int argc, char const *argv[])
 	port = strtol(argv[1],NULL,10);
 	if(argv[2]!=NULL)
 	{
+		ext = strrchr(argv[2], '.');
+		ext[strlen(ext)] = '\0';
+		if (!ext) {
+		    printf("ext:%s\n",ext);
+		    printf(RED("INVALID FILE\n"));
+		    exit(0);
+		}
+	        else if(strcmp(ext,"class") || strcmp(ext,"out") || strcmp(ext,"bin")||strcmp(ext,"o")) 
+		{
+    		printf(RED("Invalid File Extension: %s\n"), ext + 1);
+		exit(0);
+		}
+
 		file_fd = open(argv[2],O_RDONLY,S_IRUSR);
+		if(file_fd<0)
+		{
+			printf(RED("Invalid File\n"));
+			exit(0);
+		}
 	}
     }
     else
@@ -42,7 +61,7 @@ int main(int argc, char const *argv[])
 	printf("port: %d\n",port);
 	printf("..................\n");
 	
-    if(port>0 && port<65536)
+    if(port>1024 && port<65536)
     {
     // Creating socket file descriptor 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
