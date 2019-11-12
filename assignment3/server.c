@@ -216,8 +216,13 @@ int main(int argc, char const *argv[], char const *env[])
 	}
 	
 	// checking if the chroot succeeded
-	if(chr == 0){
+	if(chr != 0)
+	{
+		printf("chroot error\n");
+		exit(0);
+	}
 	// testting the chroot
+	else{
 	if(getcwd(cwd,sizeof(cwd))!=NULL)
         {
                 printf(RED("working directory after chroot: %s\n"),cwd);
@@ -257,10 +262,6 @@ int main(int argc, char const *argv[], char const *env[])
 	{
 		printf("access denied");
 	}
-	}
-	else // for chroot
-	{
-		printf("chroot error\n");
 	}
 	free(hello);	
 	return 0;

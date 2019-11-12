@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
     char *hello = "Hello from client"; 
     char buffer[1024]={0};
     char try[1024]={0};
-    int total_bytes_read=0,file_size;
+    int total_bytes_read=0,file_size=0;
     int port = 8080;
     if(argc == 2)
     {
@@ -66,12 +66,11 @@ int main(int argc, char const *argv[])
     file_size = ntohs(file_size);
     printf("file-size: %d\ttry-size: %d\n",file_size,sizeof(try));
   
-   /* if(file_size<sizeof(buffer))
+   if(file_size<=0)
     {
-	read(sock,buffer,sizeof(buffer));
-	printf("%s\n",buffer);
+        printf("No information from server\n");
+	exit(0);
     }
-    else{*/
     while(total_bytes_read<file_size)
     {
 	if(file_size-total_bytes_read >= sizeof(buffer))
