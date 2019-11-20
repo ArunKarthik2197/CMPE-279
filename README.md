@@ -21,5 +21,13 @@
 - `chdir()` to an empty directory and `chroot()` to make this directory a fake root directory.
 - File contents were still accessible over the client.
 
+#### Assignment -4
+- Used capabilities API to add restrictions to the server file.
+- Capabilities API: **SECCOMP-BPF**
+- Dependencies: `libseccomp` To install: `sudo apt-get install libseccomp-dev`
+- Easier to use over `SELinux` and `AppArmor`
+- Enforced various rules using `secomp-bpf` to restrict the functionality to only the required system calls.
+- How to compile: `gcc server.c -o server -lseccomp`
+- How to trace system-calls used: `sudo strace ./server (command line args)` **OR/AND** `sudo strace -f ./server (command line args)`
 
 
