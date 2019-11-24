@@ -6,11 +6,33 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <arpa/inet.h> 
+#include <arpa/inet.h>
+#include <seccomp.h> 
 //#define PORT 8080 
-   
+void add_rules()
+{
+	scmp_filter_ctx ctx;
+
+
+        ctx = seccomp_init(SCMP_ACT_TRAP);
+
+        seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(rt_sigreturn), 0);
+        seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(exit), 0);
+        seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(read), 0);
+        seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(write), 0);
+	seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(fstat64), 0);
+	seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(socketcall), 0);
+	seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(exit_group), 0);
+
+
+	seccomp_load(ctx);
+
+        printf("Rules enforced\n");
+	
+}   
 int main(int argc, char const *argv[]) 
 { 
+    add_rules();
     struct sockaddr_in address; 
     int sock = 0, valread; 
     struct sockaddr_in serv_addr; 
