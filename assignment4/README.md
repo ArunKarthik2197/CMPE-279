@@ -17,7 +17,9 @@
 - accept
 - wait4
 -exit_group
+
 **CHILD SPECIFIC CALLS**
+
 - mmap2
 - munmap
 - fstat64
